@@ -14,7 +14,7 @@ import java.util.Properties;
  */
 public class JobSqlTest {
     public Connection init() {
-        try (InputStream input = JobSql.class.getClassLoader().getResourceAsStream("app.properties")) {
+        try (InputStream input = TriggerSql.class.getClassLoader().getResourceAsStream("app.properties")) {
             Properties config = new Properties();
             config.load(input);
             Class.forName(config.getProperty("driver-class-name"));
@@ -30,7 +30,7 @@ public class JobSqlTest {
     @Test
     public void receiveDataFromDB() throws SQLException, SchedulerException {
         Connection cn = this.init();
-        JobSql job = new JobSql(new Sql());
+        TriggerSql job = new TriggerSql();
         job.startUp();
         PreparedStatement st = cn.prepareStatement("SELECT  count(right(date, 2)), (select max(id) from vacancy)   from vacancy " +
                 "where right(date, 2)= ?");
